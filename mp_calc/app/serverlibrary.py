@@ -1,7 +1,6 @@
 
 
-def merge(array, p, q, r, f):
-    
+def merge(array, p, q, r, f): 
     start, mid, end = p, q, r
     n_left = mid - start + 1
     n_right = end - mid
