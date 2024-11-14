@@ -37,8 +37,17 @@ def questions():
 	form.assign_to.choices=userlist
 	if form.validate_on_submit():
 		question = Question(expression=form.expression.data)
-		evalans = EvaluateExpression(form.expression.data)
-		question.answer = evalans.evaluate()
+		try:
+			# Attempt to evaluate the expression
+			evalans = EvaluateExpression(form.expression.data)
+			question.answer = evalans.evaluate()
+		except Exception:
+			# Notify user without detailed error message
+			flash('Invalid expression. Please correct it and try again.', 'danger')
+			return render_template('questions.html', title='Questions', 
+							user=current_user,
+							questions=questions,
+							form=form, prefix=prefix)
 		question.author = current_user.id 
 		challenge = Challenge(question=question)
 		username_to = []

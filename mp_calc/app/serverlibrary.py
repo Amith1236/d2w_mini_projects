@@ -108,10 +108,9 @@ class EvaluateExpression:
     operator_stack = Stack()
     expression = self.insert_space()
     tokens = expression.split()
-
     ##Phase 1
     for char in tokens:
-      if char in "0123456789":
+      if char.isnumeric():
         operand_stack.push(int(char))
       elif char in "+-":
         while not operator_stack.is_empty and operator_stack.peek() != "(":
@@ -127,6 +126,9 @@ class EvaluateExpression:
         while operator_stack.peek() != "(":
           self.process_operator(operand_stack, operator_stack)
         operator_stack.pop()
+      else:
+        raise ValueError(f"Invalid character '{char}' in expression.")
+      
 
       #print("checking char : ", char, operand_stack.items, operator_stack.items)
 
@@ -134,6 +136,7 @@ class EvaluateExpression:
     while not operator_stack.is_empty:
         self.process_operator(operand_stack, operator_stack)
     return operand_stack.pop()
+
 
 
 def get_smallest_three(challenge):
